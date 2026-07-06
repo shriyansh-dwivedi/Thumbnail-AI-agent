@@ -93,7 +93,12 @@ def render_thumbnail(title, tag, mood_name, position, overlay, bg_image_bytes):
 
     # tag pill
     if tag.strip():
-        tag_font = ImageFont.truetype(os.path.join(ASSETS, "Outfit-Bold.ttf"), 30)
+        font_path = os.path.join(ASSETS, "Outfit-Bold.ttf")
+
+try:
+    tag_font = ImageFont.truetype(font_path, 30)
+except OSError:
+    tag_font = ImageFont.load_default()
         pad_x = 26
         tw = draw.textlength(tag.upper(), font=tag_font)
         pill_w, pill_h = tw + pad_x * 2, 58
@@ -115,7 +120,10 @@ def render_thumbnail(title, tag, mood_name, position, overlay, bg_image_bytes):
         if len(lines) <= 3 and widths_ok:
             break
         font_size -= 4
+    try:
     font = ImageFont.truetype(display_font_path, font_size)
+except OSError:
+    font = ImageFont.load_default()
     lines = wrap_lines(draw, title_text, font, max_width)
 
     line_height = int(font_size * 1.05)
