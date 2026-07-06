@@ -12,9 +12,9 @@ st.set_page_config(page_title="Thumbnail Agent", page_icon="🎬", layout="wide"
 def generate_hooks(topic, api_key):
     import anthropic
 
-    client = anthropic.Anthropic(api_key=api_key)
+    client = anthropic.Anthropic(api_key='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') 
     msg = client.messages.create(
-        model="claude-sonnet-4-6",
+        model="llama-3.3-70b-versatile",
         max_tokens=500,
         messages=[
             {
@@ -50,7 +50,7 @@ col1, col2 = st.columns([1, 1.4], gap="large")
 
 with col1:
     st.subheader("✨ AI Hook Generator")
-    api_key = st.secrets.get("ANTHROPIC_API_KEY", os.environ.get("ANTHROPIC_API_KEY", ""))
+    api_key = st.secrets.get("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", os.environ.get("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", ""))
     topic = st.text_area("Video kis baare mein hai?", placeholder="e.g. maine 30 din sirf maggi khai")
 
     if "hooks" not in st.session_state:
@@ -60,7 +60,7 @@ with col1:
 
     if st.button("Hook ideas banao", use_container_width=True):
         if not api_key:
-            st.error("ANTHROPIC_API_KEY set nahi hai. Streamlit secrets mein add karo.")
+            st.error("ANTHROPIC_API_K set nahi hai. Streamlit secrets mein add karo.")
         elif not topic.strip():
             st.warning("Pehle topic likho.")
         else:
