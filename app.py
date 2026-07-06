@@ -12,10 +12,9 @@ st.set_page_config(page_title="Thumbnail Agent", page_icon="🎬", layout="wide"
 def generate_hooks(topic, api_key):
     from groq import Groq
 
-    client = anthropic.Anthropic(api_key='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') 
-    msg = client.messages.create(
+    client = Groq(api_key=api_key)
+    completion = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
-        max_tokens=500,
         messages=[
             {
                 "role": "user",
@@ -28,7 +27,7 @@ def generate_hooks(topic, api_key):
             }
         ],
     )
-    raw = "".join(block.text for block in msg.content if hasattr(block, "text")).strip()
+    raw = completion.choices[0].message.content.strip()
     clean = raw.replace("```json", "").replace("```", "").strip()
     return json.loads(clean)
 
@@ -50,7 +49,7 @@ col1, col2 = st.columns([1, 1.4], gap="large")
 
 with col1:
     st.subheader("✨ AI Hook Generator")
-    api_key = st.secrets.get("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", os.environ.get("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",))
+    api_key = st.secrets.get("GROQ_API_KEY", os.environ.get("GROQ_API_KEY", ""))
     topic = st.text_area("Video kis baare mein hai?", placeholder="e.g. maine 30 din sirf maggi khai")
 
     if "hooks" not in st.session_state:
@@ -60,15 +59,15 @@ with col1:
 
     if st.button("Hook ideas banao", use_container_width=True):
         if not api_key:
-            st.error('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' set nahi hai. Streamlit secrets mein add karo.")
+            st.error("GROQ_API_KEY set nahi hai. Streamlit secrets mein add karo.")
         elif not topic.strip():
             st.warning("Pehle topic likho.")
         else:
             with st.spinner("Soch raha hoon..."):
                 try:
                     st.session_state.hooks = generate_hooks(topic, api_key)
-                except Exception:
-                    st.error("Suggestions nahi ban paaye, dobara try karo.")
+                except Exception as e:
+                    st.error(f"Suggestions nahi ban paaye: {e}")
 
     for h in st.session_state.hooks:
         if st.button(h, key=f"hook-{h}", use_container_width=True):
