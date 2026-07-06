@@ -60,7 +60,7 @@ with col1:
 
     if st.button("Hook ideas banao", use_container_width=True):
         if not api_key:
-            st.error(api_key='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' set nahi hai. Streamlit secrets mein add karo.")
+            st.error('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' set nahi hai. Streamlit secrets mein add karo.")
         elif not topic.strip():
             st.warning("Pehle topic likho.")
         else:
