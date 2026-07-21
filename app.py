@@ -14,7 +14,7 @@ from backend import generate_full_thumbnail
 st.set_page_config(page_title="AI Thumbnail Agent", page_icon="🎬", layout="centered")
 
 st.title("🎬 AI Thumbnail Agent")
-st.caption("Generate scroll-stopping YouTube thumbnails from a simple idea — powered by Pollinations.ai (100% free).")
+st.caption("Generate scroll-stopping YouTube thumbnails from a simple idea — powered by THE JACKBABA (100% free).")
 
 # ---------------- Sidebar: settings ----------------
 with st.sidebar:
